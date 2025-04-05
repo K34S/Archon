@@ -1,0 +1,39 @@
+tasks:
+  - init: |
+      python -m pip install --upgrade pip
+      pip install -r requirements.txt
+    command: |
+      echo "Creating .env file..."
+      cat > .env << EOL
+      # Base URL for the OpenRouter instance
+      BASE_URL=https://openrouter.ai/api/v1
+
+      # OpenRouter API Key
+      LLM_API_KEY=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
+
+      # OpenAI API Key (needed for embeddings)
+      # Since we're using OpenRouter, we'll use the same key for now
+      OPENAI_API_KEY=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
+
+      # The LLM you want to use for the reasoner
+      # Using a free model from OpenRouter
+      REASONER_MODEL=openai/gpt-3.5-turbo
+
+      # The LLM you want to use for the primary agent/coder
+      # Using a free model from OpenRouter
+      PRIMARY_MODEL=openai/gpt-3.5-turbo
+
+      # Embedding model you want to use
+      EMBEDDING_MODEL=txt-embedding-3-small
+      EOL
+      echo "Starting Streamlit..."
+      streamlit run streamlit_ui.py
+
+ports:
+  - port: 8501
+    onOpen: open-preview
+    visibility: public
+
+vscode:
+  extensions:
+    - ms-python.python
